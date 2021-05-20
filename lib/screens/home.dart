@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'streak.dart';
 
 class Home extends StatelessWidget {
   @override
@@ -8,9 +9,7 @@ class Home extends StatelessWidget {
         title: Text("GH <Streak>"),
       ),
       body: Container(
-        child: Center(
-          child: Text("GH Streak"),
-        ),
+        child: Streak(),
       ),
     );
   }
