@@ -36,8 +36,9 @@ class _StreakState extends State<Streak> {
             ),
           );
         }
-
-        print(result.data["user"]);
+        List weeks = result.data["user"]["contributionsCollection"]
+            ["contributionCalendar"]["weeks"];
+        print(weeks);
         return Container(
           child: Text(result.data["user"]["name"]),
         );
