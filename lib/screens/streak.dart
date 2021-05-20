@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import '../providers/user_query.dart';
 
 class Streak extends StatefulWidget {
   @override
@@ -7,21 +8,13 @@ class Streak extends StatefulWidget {
 }
 
 class _StreakState extends State<Streak> {
-  final String _query = """
-  query post(\$Id: Int!) {
-    post(id: \$Id) {
-      id
-      title
-      body
-    }
-  }
-  """;
+  final String _query = dataQuery;
 
   @override
   Widget build(BuildContext context) {
     return Query(
       options: QueryOptions(document: gql(_query), variables: {
-        'Id': 2,
+        'Username': "lemokami",
       }),
       builder: (
         QueryResult result, {
@@ -44,9 +37,9 @@ class _StreakState extends State<Streak> {
           );
         }
 
-        print(result);
+        print(result.data["user"]);
         return Container(
-          child: Text(result.data["post"]["body"]),
+          child: Text(result.data["user"]["name"]),
         );
       },
     );

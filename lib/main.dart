@@ -15,8 +15,7 @@ void main() async {
   final AuthLink authLink = AuthLink(
     getToken: () async => 'Bearer ${DotEnv.env["AUTH_TOKEN"]}',
   );
-  // final Link link = authLink.concat(httpLink);
-  final Link link = httpLink;
+  final Link link = authLink.concat(httpLink);
 
   ValueNotifier<GraphQLClient> client = ValueNotifier(
     GraphQLClient(
