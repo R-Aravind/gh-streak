@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'loading.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import '../providers/check_user.dart';
+import 'loading.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -9,6 +10,55 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   final _inputController = new TextEditingController();
+
+  void _handleLogin() async {
+    if (_inputController.text.isNotEmpty) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Loading(
+            username: _inputController.text,
+          ),
+        ),
+      );
+      bool loginSuccess = await checkUser(_inputController.text);
+      Future.delayed(Duration(seconds: 2));
+      Navigator.pop(context);
+      if (loginSuccess) {
+        Navigator.pushReplacementNamed(context, '/home');
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(text: "User "),
+                  TextSpan(
+                    text: "${_inputController.text}",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  TextSpan(text: " doesn't exist"),
+                ],
+                style: TextStyle(
+                  color: Theme.of(context).accentColor,
+                ),
+              ),
+            ),
+            action: SnackBarAction(label: "OK", onPressed: () {}),
+            duration: Duration(milliseconds: 1500),
+            backgroundColor: Theme.of(context).primaryColor,
+            elevation: 0,
+            padding: EdgeInsets.only(
+              top: 10,
+              left: 40,
+              right: 20,
+              bottom: 10,
+            ),
+          ),
+        );
+      }
+    }
+  }
 
   @override
   void dispose() {
@@ -69,6 +119,7 @@ class _LoginState extends State<Login> {
                     hintText: "Type GitHub Username",
                     hintStyle: TextStyle(color: Colors.black54),
                   ),
+                  onEditingComplete: _handleLogin,
                 ),
                 Container(
                   margin: EdgeInsets.only(
@@ -77,27 +128,11 @@ class _LoginState extends State<Login> {
                   ),
                   alignment: Alignment.center,
                   child: IconButton(
-                    onPressed: () async {
-                      if (_inputController.text.isNotEmpty) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Loading(
-                              username: _inputController.text,
-                            ),
-                          ),
-                        );
-                        var loginSuccess =
-                            await checkUser(_inputController.text);
-                        Future.delayed(Duration(seconds: 2));
-                        Navigator.pop(context);
-                        if (loginSuccess) {
-                          Navigator.pushReplacementNamed(context, '/home');
-                        }
-                      }
-                    },
                     splashRadius: 1,
-                    icon: Icon(Icons.arrow_right_alt),
+                    color: Theme.of(context).primaryColor,
+                    iconSize: 60,
+                    icon: Icon(MaterialCommunityIcons.chevron_right),
+                    onPressed: _handleLogin,
                   ),
                 ),
               ],
