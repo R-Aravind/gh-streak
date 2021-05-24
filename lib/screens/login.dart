@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'loading.dart';
+import '../providers/check_user.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -33,8 +35,8 @@ class _LoginState extends State<Login> {
               children: [
                 Container(
                   margin: EdgeInsets.only(
-                    top: 30,
-                    bottom: 30,
+                    top: 70,
+                    bottom: 20,
                   ),
                   alignment: Alignment.topLeft,
                   child: Text(
@@ -48,7 +50,7 @@ class _LoginState extends State<Login> {
                 ),
                 Container(
                   margin: EdgeInsets.only(
-                    bottom: 60,
+                    bottom: 100,
                   ),
                   alignment: Alignment.center,
                   child: Text(
@@ -61,7 +63,7 @@ class _LoginState extends State<Login> {
                 ),
                 TextField(
                   autocorrect: false,
-                  autofocus: true,
+                  autofocus: false,
                   controller: _inputController,
                   decoration: InputDecoration(
                     hintText: "Type GitHub Username",
@@ -75,7 +77,25 @@ class _LoginState extends State<Login> {
                   ),
                   alignment: Alignment.center,
                   child: IconButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      if (_inputController.text.isNotEmpty) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Loading(
+                              username: _inputController.text,
+                            ),
+                          ),
+                        );
+                        var loginSuccess =
+                            await checkUser(_inputController.text);
+                        Future.delayed(Duration(seconds: 2));
+                        Navigator.pop(context);
+                        if (loginSuccess) {
+                          Navigator.pushReplacementNamed(context, '/home');
+                        }
+                      }
+                    },
                     splashRadius: 1,
                     icon: Icon(Icons.arrow_right_alt),
                   ),

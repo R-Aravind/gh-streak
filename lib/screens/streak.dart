@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:hive/hive.dart';
 import '../providers/user_query.dart';
 
 class Streak extends StatefulWidget {
@@ -12,9 +13,12 @@ class _StreakState extends State<Streak> {
 
   @override
   Widget build(BuildContext context) {
+    var box = Hive.box("mainBox");
+    String username = box.get("username");
+
     return Query(
       options: QueryOptions(document: gql(_query), variables: {
-        'Username': "lemokami",
+        'Username': username,
       }),
       builder: (
         QueryResult result, {
@@ -38,7 +42,6 @@ class _StreakState extends State<Streak> {
         }
         List weeks = result.data["user"]["contributionsCollection"]
             ["contributionCalendar"]["weeks"];
-        print(weeks);
         return Container(
           child: Text(result.data["user"]["name"]),
         );

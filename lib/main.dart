@@ -8,8 +8,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await DotEnv.load(fileName: ".env");
   await initHiveForFlutter();
-  var box = await Hive.openBox("myBox");
-
   final HttpLink httpLink = HttpLink(
     DotEnv.env["API_URL"],
   );
@@ -24,6 +22,6 @@ void main() async {
       cache: GraphQLCache(store: HiveStore()),
     ),
   );
-
+  var box = await Hive.openBox("mainBox");
   runApp(MyApp(client: client));
 }

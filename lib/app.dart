@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var box = Hive.box("myBox");
+    var box = Hive.box("mainBox");
     String username = box.get("username");
 
     return GraphQLProvider(
@@ -32,6 +32,10 @@ class MyApp extends StatelessWidget {
             bodyText2: BodyTextStyle,
           ),
         ),
+        routes: {
+          "/login": (context) => Login(),
+          "/home": (context) => Home(),
+        },
       ),
     );
   }
