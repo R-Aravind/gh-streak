@@ -43,7 +43,7 @@ class _StreakState extends State<Streak> {
         List weeks = result.data["user"]["contributionsCollection"]
             ["contributionCalendar"]["weeks"];
         return Container(
-          child: Text(result.data["user"]["name"]),
+          child: Text(result.data["user"]["login"]),
         );
       },
     );
