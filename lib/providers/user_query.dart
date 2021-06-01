@@ -3,6 +3,7 @@ final String dataQuery = """
     user(login: \$Username) {
       login
       name
+      bio
       contributionsCollection {
         hasAnyContributions
         hasAnyRestrictedContributions

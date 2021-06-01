@@ -42,8 +42,36 @@ class _StreakState extends State<Streak> {
         }
         List weeks = result.data["user"]["contributionsCollection"]
             ["contributionCalendar"]["weeks"];
+
         return Container(
-          child: Text(result.data["user"]["login"]),
+          margin: EdgeInsets.only(
+            top: 30,
+            left: 30,
+            right: 30,
+            bottom: 20,
+          ),
+          child: Column(
+            children: [
+              Container(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  "username: ${result.data["user"]["login"]}",
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+              Container(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  "bio: ${result.data["user"]["bio"]}",
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+            ],
+          ),
         );
       },
     );
