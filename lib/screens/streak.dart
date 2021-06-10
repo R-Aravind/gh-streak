@@ -81,7 +81,7 @@ class _StreakState extends State<Streak> {
                           Container(
                             width: MediaQuery.of(context).size.width * 0.4,
                             child: Text(
-                              "${result.data["user"]["name"]}",
+                              "${result.data["user"]["login"]}",
                               overflow: TextOverflow.clip,
                               style: TextStyle(
                                 fontSize: 22,
