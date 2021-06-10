@@ -1,20 +1,25 @@
-
-int calcStreak(weeks) {
-  /*
+/*
   calcStreak method
 
   inputs:
-  - weeks object returned by GitHub graphQl API
+  Object : weeks
+  - weeks returned by GitHub graphQl API
   i.e. :result.data["user"]["contributionsCollection"]["contributionCalendar"]["weeks"]
 
   Checks contribution count of each day till
 
-  output: <int>
-  - streak
+  output: 
+  Map<String, int> : result
+  
   */
-
+Map<String, int> calcStreak(weeks) {
   List<int> contributions = [];
-  int streak = 0;
+  int streak = 0, longestStreak = 0, curStreak = 0, contribToday = 0;
+  Map<String, int> result = {
+    "streak": streak,
+    "longestStreak": longestStreak,
+    "contribToday": contribToday,
+  };
 
   try {
     for (int i = 0; i < weeks.length; i++) {
@@ -25,12 +30,31 @@ int calcStreak(weeks) {
 
     int i = contributions.length - 1;
     while (contributions[i] > 0) {
-        streak++;
-        i--;
+      streak++;
+      i--;
     }
-  } catch (_) {
 
+    longestStreak = streak;
+    i = contributions.length - 1;
+    while (i-- > 0) {
+      if (contributions[i] > 0) {
+        curStreak++;
+      } else {
+        if (curStreak > longestStreak) longestStreak = curStreak;
+        curStreak = 0;
+      }
+    }
+
+    contribToday = contributions[contributions.length - 1];
+
+    result = {
+      "streak": streak,
+      "longestStreak": longestStreak,
+      "contribToday": contribToday,
+    };
+  } catch (error) {
+    print(error);
   }
-  
-  return streak;
+
+  return result;
 }
