@@ -4,6 +4,7 @@ final String dataQuery = """
       login
       name
       bio
+      avatarUrl
       contributionsCollection {
         hasAnyContributions
         hasAnyRestrictedContributions
