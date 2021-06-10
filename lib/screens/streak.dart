@@ -73,39 +73,29 @@ class _StreakState extends State<Streak> {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(left: 40),
+                      margin: EdgeInsets.only(left: 30),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
+                            width: MediaQuery.of(context).size.width * 0.4,
                             child: Text(
                               "${result.data["user"]["name"]}",
                               overflow: TextOverflow.clip,
                               style: TextStyle(
-                                fontSize: 24,
+                                fontSize: 22,
                                 color: Theme.of(context).primaryColor,
                               ),
                             ),
                           ),
                           Container(
+                            width: MediaQuery.of(context).size.width * 0.4,
                             child: Text(
                               "[${result.data["user"]["name"]}]",
                               overflow: TextOverflow.clip,
                               style: TextStyle(
                                 fontSize: 15,
-                                color: Theme.of(context).primaryColor,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(top: 10),
-                            width: MediaQuery.of(context).size.width * 0.4,
-                            child: Text(
-                              "${result.data["user"]["bio"]}",
-                              overflow: TextOverflow.clip,
-                              style: TextStyle(
-                                fontSize: 14,
                                 color: Theme.of(context).primaryColor,
                               ),
                             ),
@@ -117,7 +107,20 @@ class _StreakState extends State<Streak> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top: 50),
+                margin: EdgeInsets.only(top: 20),
+                padding: EdgeInsets.all(3),
+                child: Text(
+                  "${result.data["user"]["bio"]}",
+                  overflow: TextOverflow.clip,
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 20),
                 child: Card(
                   elevation: 0,
                   shape: RoundedRectangleBorder(
