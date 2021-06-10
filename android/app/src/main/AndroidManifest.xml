@@ -1,8 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.gh_streak">
+    package="com.example.gh_streak"> 
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="gh_streak"
-        android:icon="@mipmap/ic_launcher">
+        android:label="GH Streak"
+        android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
