@@ -50,8 +50,8 @@ class _StreakState extends State<Streak> {
         return Container(
           margin: EdgeInsets.only(
             top: 50,
-            left: 35,
-            right: 30,
+            left: 25,
+            right: 25,
             bottom: 20,
           ),
           child: Column(
