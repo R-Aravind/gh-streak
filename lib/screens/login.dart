@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import '../providers/check_user.dart';
@@ -11,6 +13,44 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   final _inputController = new TextEditingController();
 
+  void _showSnackbar(
+      {String user = "",
+      String messageString = "Oops! an error has occured."}) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: RichText(
+          text: TextSpan(
+            children: user != ""
+                ? [
+                    TextSpan(text: "User "),
+                    TextSpan(
+                      text: "${_inputController.text}",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    TextSpan(text: " doesn't exist"),
+                  ]
+                : [
+                    TextSpan(text: messageString),
+                  ],
+            style: TextStyle(
+              color: Theme.of(context).accentColor,
+            ),
+          ),
+        ),
+        action: SnackBarAction(label: "OK", onPressed: () {}),
+        duration: Duration(milliseconds: 1500),
+        backgroundColor: Theme.of(context).primaryColor,
+        elevation: 0,
+        padding: EdgeInsets.only(
+          top: 10,
+          left: 40,
+          right: 20,
+          bottom: 10,
+        ),
+      ),
+    );
+  }
+
   void _handleLogin() async {
     if (_inputController.text.isNotEmpty) {
       Navigator.push(
@@ -21,41 +61,21 @@ class _LoginState extends State<Login> {
           ),
         ),
       );
-      bool loginSuccess = await checkUser(_inputController.text);
-      Future.delayed(Duration(seconds: 2));
-      Navigator.pop(context);
-      if (loginSuccess) {
-        Navigator.pushReplacementNamed(context, '/home');
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: RichText(
-              text: TextSpan(
-                children: [
-                  TextSpan(text: "User "),
-                  TextSpan(
-                    text: "${_inputController.text}",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  TextSpan(text: " doesn't exist"),
-                ],
-                style: TextStyle(
-                  color: Theme.of(context).accentColor,
-                ),
-              ),
-            ),
-            action: SnackBarAction(label: "OK", onPressed: () {}),
-            duration: Duration(milliseconds: 1500),
-            backgroundColor: Theme.of(context).primaryColor,
-            elevation: 0,
-            padding: EdgeInsets.only(
-              top: 10,
-              left: 40,
-              right: 20,
-              bottom: 10,
-            ),
-          ),
-        );
+      try {
+        bool loginSuccess = await checkUser(_inputController.text);
+        Future.delayed(Duration(seconds: 2));
+        Navigator.pop(context);
+        if (loginSuccess) {
+          Navigator.pushReplacementNamed(context, '/home');
+        } else {
+          _showSnackbar(user: _inputController.text);
+        }
+      } on SocketException {
+        Navigator.pop(context);
+        _showSnackbar(messageString: "No Internet Connection!");
+      } catch (_) {
+        Navigator.pop(context);
+        _showSnackbar();
       }
     }
   }
