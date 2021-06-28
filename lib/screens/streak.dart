@@ -1,9 +1,12 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:gh_streak/screens/loading.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:hive/hive.dart';
 import '../providers/user_query.dart';
 import '../helpers/calc_streak.dart';
+import 'package:data_connection_checker/data_connection_checker.dart';
 
 class Streak extends StatefulWidget {
   @override
@@ -12,6 +15,20 @@ class Streak extends StatefulWidget {
 
 class _StreakState extends State<Streak> {
   final String _query = dataQuery;
+  var listener;
+
+  void _refetchOnNetwork(VoidCallback refetch) {
+    listener = DataConnectionChecker().onStatusChange.listen((status) {
+      switch (status) {
+        case DataConnectionStatus.connected:
+          listener.cancel();
+          refetch();
+          break;
+        case DataConnectionStatus.disconnected:
+          break;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +45,15 @@ class _StreakState extends State<Streak> {
         FetchMore fetchMore,
       }) {
         if (result.hasException) {
+          print(result.exception);
+          if (result.exception.linkException.originalException
+              is SocketException) {
+            _refetchOnNetwork(refetch);
+            return Loading(
+              messageString: "No Internet Connection!\nWaiting for internet",
+            );
+          }
+
           return Container(
             child: Center(
               child: Text(result.exception.toString()),
