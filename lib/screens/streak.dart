@@ -45,7 +45,6 @@ class _StreakState extends State<Streak> {
         FetchMore fetchMore,
       }) {
         if (result.hasException) {
-          print(result.exception);
           if (result.exception.linkException.originalException
               is SocketException) {
             _refetchOnNetwork(refetch);
@@ -54,11 +53,7 @@ class _StreakState extends State<Streak> {
             );
           }
 
-          return Container(
-            child: Center(
-              child: Text(result.exception.toString()),
-            ),
-          );
+          return Loading();
         }
 
         if (result.isLoading) {
