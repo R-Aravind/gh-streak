@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 class Loading extends StatelessWidget {
-  final username;
+  final String username, messageString;
 
-  Loading({@required this.username});
+  Loading(
+      {this.username = "", this.messageString = "Oops! There is an error."});
 
   @override
   Widget build(BuildContext context) {
@@ -29,17 +30,21 @@ class Loading extends StatelessWidget {
                     color: Colors.black87,
                     fontSize: 18,
                   ),
-                  children: [
-                    TextSpan(text: "Hi "),
-                    TextSpan(
-                      text: "$username!",
-                      style: TextStyle(
-                        color: Theme.of(context).primaryColor,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    TextSpan(text: "\nsearching GitHub for you"),
-                  ],
+                  children: username != ""
+                      ? [
+                          TextSpan(text: "Hi "),
+                          TextSpan(
+                            text: "$username!",
+                            style: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          TextSpan(text: "\nsearching GitHub for you"),
+                        ]
+                      : [
+                          TextSpan(text: messageString),
+                        ],
                 ),
               ),
             ),
